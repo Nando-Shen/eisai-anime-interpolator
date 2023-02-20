@@ -8,7 +8,7 @@ source ./_env/make_config.bashrc
 
 if [[ $1 == shell_docker ]]; then
     ([ -z $DISPLAY ] && echo "no display" || xhost +local:docker) \
-    && sudo docker run \
+    && docker run \
         $OPTIONS_DOCKER_RUN \
         $MOUNTS_DOCKER \
         -it $DOCKER_USER/$DOCKER_NAME:latest \
@@ -16,7 +16,7 @@ if [[ $1 == shell_docker ]]; then
 
 elif [[ $1 == jupyterlab ]]; then
     ([ -z $DISPLAY ] && echo "no display" || xhost +local:docker) \
-    && sudo docker run \
+    && docker run \
         $OPTIONS_DOCKER_RUN \
         $MOUNTS_DOCKER \
         -it $DOCKER_USER/$DOCKER_NAME:latest \
@@ -34,16 +34,16 @@ elif [[ $1 == shell_singularity ]]; then
         /bin/bash
 
 elif [[ $1 == docker_build ]]; then
-    sudo docker build -t $DOCKER_USER/$DOCKER_NAME:latest $PROJECT_DN/_env
+   docker build -t $DOCKER_USER/$DOCKER_NAME:latest $PROJECT_DN/_env
 elif [[ $1 == docker_push ]]; then
-    sudo docker push $DOCKER_USER/$DOCKER_NAME:latest
+   docker push $DOCKER_USER/$DOCKER_NAME:latest
 elif [[ $1 == docker_pull ]]; then
-    sudo docker pull $DOCKER_USER/$DOCKER_NAME:latest
+   docker pull $DOCKER_USER/$DOCKER_NAME:latest
 elif [[ $1 == docker_stop ]]; then
-    sudo docker stop $(sudo docker ps -aq) && sudo docker rm $(sudo docker ps -aq)
+   docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
 
 elif [[ $1 == singularity_build ]]; then
-    sudo -E singularity build \
+     -E singularity build \
         $PROJECT_DN/_env/singularity.sif \
         $PROJECT_DN/_env/singularity.def
 
