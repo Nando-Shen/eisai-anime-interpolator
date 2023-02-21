@@ -5,8 +5,8 @@ from _util.pytorch_v0 import * ; import _util.pytorch_v0 as utorch
 
 class DatabackendATD12k:
     def __init__(self):
-        self.dn = '/home/atd12k_points'
-        self.fn = '/home/sgm'
+        self.dn = '/home/jiaming/atd12k_points'
+        self.fn = '/home/jiaming/sgm'
         self.test_source = '540p'
         self.bns = np.array(self.get_bns(), dtype=np.string_)
         return
