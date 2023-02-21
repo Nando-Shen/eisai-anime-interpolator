@@ -21,7 +21,8 @@ args = ap.parse_args()
 from _train.frame_interpolation.models.trainmodel import TrainModel
 model = TrainModel()
 
-from _train.frame_interpolation.datasets.rrldextr import Datamodule
+# from _train.frame_interpolation.datasets.rrldextr import Datamodule
+from _train.frame_interpolation.datasets.atd12k import Datamodule
 dm = Datamodule(args.dataset, bs=4)
 
 trainer = pl.Trainer(

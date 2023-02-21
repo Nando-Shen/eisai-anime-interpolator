@@ -7,7 +7,8 @@ from _util.pytorch_v0 import * ; import _util.pytorch_v0 as utorch
 
 class DatabackendATD12k:
     def __init__(self):
-        self.dn = './_data/atd12k'
+        self.dn = '/home/atd12k_points'
+        self.fn = '/home/sgm'
         self.test_source = '540p'
         self.bns = np.array(self.get_bns(), dtype=np.string_)
         return
@@ -26,13 +27,14 @@ class DatabackendATD12k:
                 I(self.get_fn(bn, i))
                 for i in range(3)
             ],
-            'flows': torch.tensor(load(f'{self.dn}/preprocessed/rfr_540p/{bn}.pkl')).flip(dims=(0,1)),
+            'flows': torch.tensor(load(f'{self.fn}/preprocessed/rfr_540p/{bn}.pkl')).flip(dims=(0,1)),
         }
     def get_fn(self, bn, fidx):
         tt,tid = bn.split('/')
         if tt=='test':
             dn = f'{self.dn}/raw/test_2k_{self.test_source}'
-            ext = 'png' if self.test_source=='540p' else 'jpg'
+            # ext = 'png' if self.test_source=='540p' else 'jpg'
+            ext = 'jpg'
         else:
             dn = f'{self.dn}/raw/train_10k'
             ext = 'jpg'
