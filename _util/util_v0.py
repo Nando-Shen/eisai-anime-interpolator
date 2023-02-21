@@ -165,9 +165,7 @@ def dump(obj, fn, mode='wb'):
 #     with open(fn, mode) as handle:
 #         return pickle.load(handle)
 def load(fn):
-    flow_np = np.load(fn)
-    flow = torch.from_numpy(flow_np)
-    return flow
+    return np.load(fn)
 
 import json
 def jwrite(x, fn, mode='w', indent='\t', sort_keys=False):
