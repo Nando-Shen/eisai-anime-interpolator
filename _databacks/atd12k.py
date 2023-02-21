@@ -19,9 +19,8 @@ class DatabackendATD12k:
             bn = idx
         else:
             assert 0, '{} not understood'.format(idx)
-        print(bn)
-        flow0 = torch.tensor(load('{}/{}/guide_flo13.npy'.format(self.fn, self.get_ffn(bn)))).flip(dims=(0, 1))
-        flow1 = torch.tensor(load('{}/{}/guide_flo31.npy'.format(self.fn, self.get_ffn(bn)))).flip(dims=(0, 1))
+        flow0 = load('{}/{}/guide_flo13.npy'.format(self.fn, self.get_ffn(bn))).flip(dims=(0, 1))
+        flow1 = load('{}/{}/guide_flo31.npy'.format(self.fn, self.get_ffn(bn))).flip(dims=(0, 1))
         return {
             'bn': bn,
             'images': [

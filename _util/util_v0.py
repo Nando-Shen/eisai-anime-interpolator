@@ -156,14 +156,18 @@ def write(text, fn, mode='w'):
     with open(fn, mode) as handle:
         return handle.write(text)
 
-import pickle
+# import pickle
 def dump(obj, fn, mode='wb'):
     mkfile(fn, parents=True, exist_ok=True)
     with open(fn, mode) as handle:
         return pickle.dump(obj, handle)
-def load(fn, mode='rb'):
-    with open(fn, mode) as handle:
-        return pickle.load(handle)
+# def load(fn, mode='rb'):
+#     with open(fn, mode) as handle:
+#         return pickle.load(handle)
+def load(fn):
+    flow_np = np.load(fn)
+    flow = torch.from_numpy(flow_np)
+    return flow
 
 import json
 def jwrite(x, fn, mode='w', indent='\t', sort_keys=False):
