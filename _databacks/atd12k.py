@@ -20,8 +20,8 @@ class DatabackendATD12k:
         else:
             assert 0, '{} not understood'.format(idx)
         print(bn)
-        flow0 = torch.tensor(load('{}/{}/guide_flo13.npy'.format(self.fn, bn))).flip(dims=(0, 1))
-        flow1 = torch.tensor(load('{}/{}/guide_flo31.npy'.format(self.fn, bn))).flip(dims=(0, 1))
+        flow0 = torch.tensor(load('{}/{}/guide_flo13.npy'.format(self.fn, self.get_ffn(bn)))).flip(dims=(0, 1))
+        flow1 = torch.tensor(load('{}/{}/guide_flo31.npy'.format(self.fn, self.get_ffn(bn)))).flip(dims=(0, 1))
         return {
             'bn': bn,
             'images': [
@@ -31,6 +31,15 @@ class DatabackendATD12k:
 
             'flows': torch.stack([flow0,flow1], dim=1)[0]
         }
+
+    def get_ffn(self, bn):
+        tt, tid = bn.split('/')
+        if tt=='test':
+            fff = 'test_2k_520p'
+        else:
+            fff = 'train_10k'
+        return '{}/{}'.format(fff, tid)
+
 
     def get_fn(self, bn, fidx):
         tt,tid = bn.split('/')
