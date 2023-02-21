@@ -21,7 +21,7 @@ class DatabackendATD12k:
             assert 0, '{} not understood'.format(idx)
         flow0 = torch.from_numpy(load('{}/{}/guide_flo13.npy'.format(self.fn, self.get_ffn(bn))))
         flow1 = torch.from_numpy(load('{}/{}/guide_flo31.npy'.format(self.fn, self.get_ffn(bn))))
-        print(flow1.size())
+        # print(flow1.size())
         return {
             'bn': bn,
             'images': [
