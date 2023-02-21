@@ -74,7 +74,7 @@ class Datamodule(pl.LightningDataModule):
         super().__init__()
         self.path = path
         self.bs = bs
-        self.dk = DatabackendATD12k(self.path)
+        self.dk = DatabackendATD12k()
         self.num_workers = num_workers
         return
     def train_dataloader(self):
