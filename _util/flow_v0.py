@@ -116,7 +116,7 @@ _lucaskanade = lambda a,b: np.moveaxis(cv2.calcOpticalFlowSparseToDense(
 _farneback = lambda a,b: np.moveaxis(cv2.calcOpticalFlowFarneback(
         a, b, None, 0.6, 3, 25, 7, 5, 1.2, cv2.OPTFLOW_FARNEBACK_GAUSSIAN,
     ), 2, 0)[None,]
-_dtvl1_ = cv2.createOptFlow_DualTVL1()
+_dtvl1_ = cv2.optflow.DualTVL1OpticalFlow_create()()
 _dtvl1 = lambda a,b: np.moveaxis(_dtvl1_.calc(
         a, b, None,
     ), 2, 0)[None,]
