@@ -19,28 +19,33 @@ class DatabackendATD12k:
             bn = idx
         else:
             assert 0, '{} not understood'.format(idx)
+        print(bn)
+        flow0 = torch.tensor(load('{}/{}/guide_flo13.npy'.format(self.fn, bn))).flip(dims=(0, 1))
+        flow1 = torch.tensor(load('{}/{}/guide_flo31.npy'.format(self.fn, bn))).flip(dims=(0, 1))
         return {
             'bn': bn,
             'images': [
                 I(self.get_fn(bn, i))
                 for i in range(3)
             ],
-            'flows': torch.tensor(load('{}/preprocessed/rfr_540p/{}.pkl'.format(self.fn,bn))).flip(dims=(0,1)),
+
+            'flows': torch.stack([flow0,flow1], dim=1)[0]
         }
+
     def get_fn(self, bn, fidx):
         tt,tid = bn.split('/')
         if tt=='test':
-            dn = '{}/raw/test_2k_{}'.format(self.dn, self.test_source)
+            dn = '{}/test_2k_{}'.format(self.dn, self.test_source)
             # ext = 'png' if self.test_source=='540p' else 'jpg'
             ext = 'jpg'
         else:
-            dn = '{}/raw/train_10k'.format(self.dn)
+            dn = '{}/train_10k'.format(self.dn)
             ext = 'jpg'
         return '{}/{}/frame{}.{}'.format(dn,tid,fidx+1,ext)
     def get_bns(self):
         return sorted([
             'test/{}'.format(dn)
-            for dn in os.listdir('{}/raw/test_2k_{}'.format(self.dn, self.test_source))
-            if os.path.isdir('{}/raw/test_2k_{}/{}'.format(self.dn, self.test_source, dn))
+            for dn in os.listdir('{}/test_2k_{}'.format(self.dn, self.test_source))
+            if os.path.isdir('{}/test_2k_{}/{}'.format(self.dn, self.test_source, dn))
         ])
 
