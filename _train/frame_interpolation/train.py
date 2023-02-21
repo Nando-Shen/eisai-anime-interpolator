@@ -55,8 +55,6 @@ trainer = pl.Trainer(
         default_hp_metric=True,
         prefix='',
     )],
-    
-    terminate_on_nan=True,
 )
 
 trainer.fit(
