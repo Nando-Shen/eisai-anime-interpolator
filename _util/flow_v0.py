@@ -110,27 +110,27 @@ def flow_resize(flow, size, mode='nearest', align_corners=False):
 ####################### TRADITIONAL #######################
 
 # dense
-_lucaskanade = lambda a,b: np.moveaxis(cv2.calcOpticalFlowSparseToDense(
+_lucaskanade = lambda a,b: np.moveaxis(cv2.optflow.calcOpticalFlowSparseToDense(
         a, b, #grid_step=5, sigma=0.5,
     ), 2, 0)[None,]
 _farneback = lambda a,b: np.moveaxis(cv2.calcOpticalFlowFarneback(
         a, b, None, 0.6, 3, 25, 7, 5, 1.2, cv2.OPTFLOW_FARNEBACK_GAUSSIAN,
     ), 2, 0)[None,]
-_dtvl1_ = cv2.optflow.DualTVL1OpticalFlow_create()()
+_dtvl1_ = cv2.optflow.createOptFlow_DualTVL1()
 _dtvl1 = lambda a,b: np.moveaxis(_dtvl1_.calc(
         a, b, None,
     ), 2, 0)[None,]
-_simple = lambda a,b: np.moveaxis(cv2.calcOpticalFlowSF(
+_simple = lambda a,b: np.moveaxis(cv2.optflow.calcOpticalFlowSF(
         a, b, 3, 5, 5,
     ), 2, 0)[None,]
-_pca_ = cv2.createOptFlow_PCAFlow()
+_pca_ = cv2.optflow.createOptFlow_PCAFlow()
 _pca = lambda a,b: np.moveaxis(_pca_.calc(
         a, b, None,
     ), 2, 0)[None,]
-_drlof = lambda a,b: np.moveaxis(cv2.calcOpticalFlowDenseRLOF(
+_drlof = lambda a,b: np.moveaxis(cv2.optflow.calcOpticalFlowDenseRLOF(
         a, b, None,
     ), 2, 0)[None,]
-_deepflow_ = cv2.createOptFlow_DeepFlow()
+_deepflow_ = cv2.optflow.createOptFlow_DeepFlow()
 _deepflow = lambda a,b: np.moveaxis(_deepflow_.calc(
         a, b, None,
     ), 2, 0)[None,]
