@@ -35,7 +35,7 @@ trainer = pl.Trainer(
 
     default_root_dir=mkdir(args.output),
 
-    accelerator='ddp',
+    accelerator='gpu',
     gpus=1,
     accumulate_grad_batches=8,
 
