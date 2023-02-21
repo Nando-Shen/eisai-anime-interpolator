@@ -2,7 +2,7 @@
 
 
 export MACHINE_NAME=
-export PROJECT_DN=/absolute/path/to/repo
+export PROJECT_DN=/home/jiaming/eisai-anime-interpolator
 
 export JUPYTERLAB_PORT=8889
 export JUPYTERLAB_HOST=localhost
