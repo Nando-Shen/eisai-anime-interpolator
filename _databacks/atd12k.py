@@ -35,7 +35,7 @@ class DatabackendATD12k:
     def get_ffn(self, bn):
         tt, tid = bn.split('/')
         if tt=='test':
-            fff = 'test_2k_520p'
+            fff = 'test_2k_540p'
         else:
             fff = 'train_10k'
         return '{}/{}'.format(fff, tid)
