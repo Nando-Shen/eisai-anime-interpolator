@@ -21,13 +21,14 @@ class DatabackendATD12k:
             assert 0, '{} not understood'.format(idx)
         flow0 = torch.from_numpy(load('{}/{}/guide_flo13.npy'.format(self.fn, self.get_ffn(bn))))
         flow1 = torch.from_numpy(load('{}/{}/guide_flo31.npy'.format(self.fn, self.get_ffn(bn))))
+        print(flow1.size())
         return {
             'bn': bn,
             'images': [
                 I(self.get_fn(bn, i))
                 for i in range(3)
             ],
-            'flows': torch.stack([flow0,flow1], dim=1)[0]
+            'flows': torch.stack([flow0,flow1], dim=1)
         }
 
     def get_ffn(self, bn):
