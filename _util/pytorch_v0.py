@@ -117,8 +117,7 @@ class SSIMMetric(torchmetrics.Metric):
         self.add_state('running_count', default=torch.tensor(0.0), dist_reduce_fx='sum')
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
-        ans = kornia.losses.ssim_loss(target, preds, self.window_size)
-        print(ans.size())
+        ans = kornia.metrics.ssim(target, preds, self.window_size).mean((1,2,3))
         self.running_sum += ans.sum()
         self.running_count += len(ans)
         return
