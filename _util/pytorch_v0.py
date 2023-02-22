@@ -167,8 +167,9 @@ class SSIMMetric(torchmetrics.Metric):
 
 class SSIMMetricCPU(torchmetrics.Metric):
     full_state_update=False
-    def __init__(self, **kwargs):
+    def __init__(self, window_size=11, **kwargs):
         super().__init__(**kwargs)
+        self.window_size = window_size
         self.add_state('running_sum', default=torch.tensor(0.0), dist_reduce_fx='sum')
         self.add_state('running_count', default=torch.tensor(0.0), dist_reduce_fx='sum')
         return
