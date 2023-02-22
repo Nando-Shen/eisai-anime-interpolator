@@ -68,6 +68,7 @@ except:
 from pytorch_msssim import ssim as calc_ssim
 import math
 from .twodee_v0 import *
+from PIL import Image
 
 
 
@@ -124,8 +125,8 @@ class SSIMMetric(torchmetrics.Metric):
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
         for i in range(preds.size()[0]):
-            pp = I(preds[i])
-            tt = I(target[i])
+            pp = T.ToPILImage(preds[i])
+            tt = T.ToPILImage(target[i])
             pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
             tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
             self.idd += 1
@@ -315,7 +316,7 @@ def save_image(tensor, filename, nrow=8, padding=2):
     Saves a given Tensor into an image file.
     If given a mini-batch tensor, will save the tensor as a grid of images.
     """
-    from PIL import Image
+
     tensor = tensor.cpu()
     grid = make_grid(tensor, nrow=nrow, padding=padding)
     ndarr = grid.mul(0.5).add(0.5).mul(255).byte().transpose(0,2).transpose(0,1).numpy()
