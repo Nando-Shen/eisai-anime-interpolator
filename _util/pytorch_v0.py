@@ -174,7 +174,7 @@ class SSIMMetricCPU(torchmetrics.Metric):
         self.add_state('running_count', default=torch.tensor(0.0), dist_reduce_fx='sum')
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
-        ans = kornia.losses.ssim(target, preds, self.window_size).mean((1,2,3))
+        ans = kornia.metrics.ssim(target, preds, self.window_size).mean((1,2,3))
         self.running_sum += ans.sum()
         self.running_count += len(ans)
 
