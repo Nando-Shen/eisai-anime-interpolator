@@ -131,7 +131,7 @@ class SSIMMetric(torchmetrics.Metric):
             # pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
             # tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
         ssss = calc_ssim(preds, target, size_average=False, data_range=1)
-        # print(ssss.size())
+        print(ssss)
             # self.idd += 1
         self.running_count += ssss.size()[0]
         self.running_sum += ssss.sum()
