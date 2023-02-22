@@ -2,6 +2,7 @@
 from _util.util_v0 import * ; import _util.util_v0 as uutil
 from _util.twodee_v0 import * ; import _util.twodee_v0 as u2d
 from _util.pytorch_v0 import * ; import _util.pytorch_v0 as utorch
+from PIL import Image
 
 class DatabackendATD12k:
     def __init__(self):
@@ -25,7 +26,7 @@ class DatabackendATD12k:
         return {
             'bn': bn,
             'images': [
-                I(self.get_fn(bn, i))
+                Image.open(self.get_fn(bn, i)).convert('RGB')
                 for i in range(3)
             ],
             'flows': torch.stack([flow0,flow1], dim=1)
