@@ -137,7 +137,6 @@ class SSIMMetric(torchmetrics.Metric):
             tt = F.pil_to_tensor(tt)
             ssss = calc_ssim(pp.unsqueeze(0).clamp(0,1), tt.unsqueeze(0).clamp(0,1), size_average=False, data_range=1.0)
             self.running_sum += ssss[0]
-            print(ssss)
 
             #     print(preds[i])
             #     print(target[i])
