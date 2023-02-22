@@ -118,8 +118,6 @@ class SSIMMetric(torchmetrics.Metric):
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
         ans = kornia.metrics.ssim(target, preds, self.window_size).mean((1,2,3))
-        print(ans)
-        print(ans.size())
         self.running_sum += ans.sum()
         self.running_count += len(ans)
         return
