@@ -217,6 +217,7 @@ class I:
                 interpolation=getattr(F.InterpolationMode, resample.upper()),
                 # antialias=antialias,
             ))
+
         assert 0, 'data not understood'
     def resize_w(self, s=512, resample='bilinear', antialias=False):
         h,w = self.size

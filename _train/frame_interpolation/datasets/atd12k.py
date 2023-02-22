@@ -26,6 +26,10 @@ class Dataset(torch.utils.data.Dataset):
         # read
         x = dk[bn]
         use_flow = x['flows'] is not None
+        for i in x['images']:
+            ss = i.resize(s)
+            ss.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.i))
+
         imgs = torch.stack([i.resize(s).tensor() for i in x['images']])
         if use_flow:
             flows = uflow.flow_resize(
