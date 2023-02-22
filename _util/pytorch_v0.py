@@ -138,6 +138,7 @@ class SSIMMetricCPU(torchmetrics.Metric):
         ans = calc_ssim(
                 preds,
                 target,
+                size_average=False,
                 data_range=255
             )
         print(ans)
