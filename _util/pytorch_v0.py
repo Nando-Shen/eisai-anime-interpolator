@@ -139,7 +139,7 @@ class SSIMMetricCPU(torchmetrics.Metric):
                 preds,
                 target,
                 size_average=False,
-                data_range=255
+                data_range=1
             )
         print(ans)
             # skimage.metrics.structural_similarity(
