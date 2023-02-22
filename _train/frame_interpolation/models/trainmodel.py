@@ -46,7 +46,7 @@ class TrainModel(pl.LightningModule):
         })
         val = torchmetrics.MetricCollection({
             'val_psnr': utorch.PSNRMetric(data_range=1.0, **_kwargs),
-            'val_ssim': utorch.SSIMMetricCPU(**_kwargs),
+            'val_ssim': utorch.SSIMMetric(**_kwargs),
             'val_lineratio': usketchers.LineRatioMetric(**_lwargs_eval),
             'val_hausdorff': udist.HausdorffDistance2dMetric(**_lwargs_eval),
             'val_chamfer_t': udist.ChamferDistance2dTMetric(**_lwargs_eval),

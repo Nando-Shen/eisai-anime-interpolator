@@ -124,16 +124,20 @@ class SSIMMetric(torchmetrics.Metric):
         self.idd = 0
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
-        transform = T.ToPILImage()
+        # transform = T.ToPILImage()
         for i in range(preds.size()[0]):
-            pp = transform(preds[i])
-            tt = transform(target[i])
-            pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
-            tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
-            self.idd += 1
-        ans = kornia.metrics.ssim(target, preds, self.window_size).mean((1,2,3))
-        self.running_sum += ans.sum()
-        self.running_count += len(ans)
+            # pp = transform(preds[i])
+            # tt = transform(target[i])
+            # pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
+            # tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
+            ssss = calc_ssim(preds[i], target[i], size_average=False, data_range=1)
+            print(ssss)
+            # self.idd += 1
+            self.running_count += 1
+            self.running_sum += ssss
+            # ans = kornia.metrics.ssim(target, preds, self.window_size).mean((1,2,3))
+        # self.running_sum += ans.sum()
+        # self.running_count += len(ans)
         return
     def compute(self):
         return self.running_sum.float() / self.running_count
