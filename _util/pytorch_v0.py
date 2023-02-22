@@ -124,9 +124,10 @@ class SSIMMetric(torchmetrics.Metric):
         self.idd = 0
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
+        transform = T.ToPILImage()
         for i in range(preds.size()[0]):
-            pp = T.ToPILImage(preds[i])
-            tt = T.ToPILImage(target[i])
+            pp = transform(preds[i])
+            tt = transform(target[i])
             pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
             tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
             self.idd += 1
