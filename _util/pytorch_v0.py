@@ -122,7 +122,7 @@ class SSIMMetric(torchmetrics.Metric):
         self.add_state('running_sum', default=torch.tensor(0.0), dist_reduce_fx='sum')
         self.add_state('running_count', default=torch.tensor(0.0), dist_reduce_fx='sum')
         self.idd = 0
-        self.transformI = T.ToPILImage()
+        self.transform = T.ToPILImage()
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
 
