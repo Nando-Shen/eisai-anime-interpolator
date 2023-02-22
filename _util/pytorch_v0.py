@@ -129,14 +129,14 @@ class SSIMMetric(torchmetrics.Metric):
 
         for i in range(preds.size()[0]):
 
-            # pp = self.transform(preds[i])
-            # tt = self.transform(target[i])
-            # pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
-            # tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
+            pp = self.transform(preds[i])
+            tt = self.transform(target[i])
+            pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
+            tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
             self.idd += 1
-            # pp = F.pil_to_tensor(pp)
-            # tt = F.pil_to_tensor(tt)
-            ssss = calc_ssim(preds[i].unsqueeze(0), target[i].unsqueeze(0))
+            pp = F.pil_to_tensor(pp)
+            tt = F.pil_to_tensor(tt)
+            ssss = calc_ssim(pp.unsqueeze(0), tt.unsqueeze(0))
             print(ssss)
             self.running_sum += ssss.item()
 
