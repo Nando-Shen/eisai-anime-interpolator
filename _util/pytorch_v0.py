@@ -67,7 +67,7 @@ except:
 
 from pytorch_msssim import ssim as calc_ssim
 import math
-from _util.twodee_v0 import *
+from twodee_v0 import I
 
 
 
@@ -120,6 +120,7 @@ class SSIMMetric(torchmetrics.Metric):
         self.window_size = window_size
         self.add_state('running_sum', default=torch.tensor(0.0), dist_reduce_fx='sum')
         self.add_state('running_count', default=torch.tensor(0.0), dist_reduce_fx='sum')
+        self.idd = 0
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
         for i in range(preds.size()[0]):
