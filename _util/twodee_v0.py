@@ -52,7 +52,7 @@ class I:
     def __init__(self, data):
         # preprocess stream-type to pil
         if isinstance(data, str):
-            data = Image.open(data)
+            data = Image.open(data).convert('RGB')
         elif isinstance(data, bytes):
             data = uri2img(data)
         self.data = data
