@@ -125,16 +125,16 @@ class SSIMMetric(torchmetrics.Metric):
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
         # transform = T.ToPILImage()
-        for i in range(preds.size()[0]):
-            print(preds[i])
-            print(target[i])
+        # for i in range(preds.size()[0]):
+        #     print(preds[i])
+        #     print(target[i])
             # pp = transform(preds[i])
             # tt = transform(target[i])
             # pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
             # tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
         # print(preds.size())
         # print(target.size())
-        ssss = calc_ssim(preds, target, size_average=False, data_range=255)
+        ssss = calc_ssim(preds, target, size_average=False, data_range=1.0)
         print(ssss)
             # self.idd += 1
         self.running_count += ssss.size()[0]
