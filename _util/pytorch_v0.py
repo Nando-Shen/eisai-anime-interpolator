@@ -65,7 +65,7 @@ try:
 except:
     pass
 
-from pytorch_msssim import ssim_matlab as calc_ssim
+from pytorch_msssim import ssim as calc_ssim
 
 
 
