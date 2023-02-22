@@ -26,7 +26,7 @@ class Dataset(torch.utils.data.Dataset):
         # read
         x = dk[bn]
         use_flow = x['flows'] is not None
-        imgs = torch.stack([i.resize(s).tensor() for i in x['images']])
+        imgs = torch.stack([i.resize(s) for i in x['images']])
         if use_flow:
             flows = uflow.flow_resize(
                 x['flows'],
