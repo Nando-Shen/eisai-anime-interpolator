@@ -141,12 +141,10 @@ class SSIMMetricCPU(torchmetrics.Metric):
             )
             for p,t in zip(preds, target)
         ]
-        print(ans)
         self.running_sum += sum(ans)
         self.running_count += len(ans)
         return
     def compute(self):
-
         return self.running_sum / self.running_count
 
 class PSNRMetric(torchmetrics.Metric):
