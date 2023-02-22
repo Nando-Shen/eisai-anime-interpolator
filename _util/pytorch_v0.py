@@ -139,10 +139,10 @@ class SSIMMetricCPU(torchmetrics.Metric):
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
 
-        for idx in range(preds.size()[0]):
-            save_image(preds[idx], '/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.i))
-            save_image(target[idx], '/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.i))
-            self.i += 1
+        # for idx in range(preds.size()[0]):
+        #     save_image(preds[idx], '/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.i))
+        #     save_image(target[idx], '/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.i))
+        #     self.i += 1
         # ans = calc_ssim(
         #         preds,
         #         target,
