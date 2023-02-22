@@ -133,6 +133,8 @@ class SSIMMetric(torchmetrics.Metric):
             tt = self.transform(target[i])
             pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
             tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
+            pp = Image.open('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
+            tt = Image.open('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
             self.idd += 1
             pp = F.pil_to_tensor(pp)
             tt = F.pil_to_tensor(tt)
