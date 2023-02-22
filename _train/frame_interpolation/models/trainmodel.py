@@ -17,7 +17,6 @@ class TrainModel(pl.LightningModule):
         # setup networks
         self.ssl = ssldtm.SoftsplatLite()
         self.dtm = ssldtm.DTM()
-        self.idd = 0
 
         # losses and metrics
         self.metrics_train, self.metrics_val, lwargs = self.get_metrics()
@@ -73,10 +72,6 @@ class TrainModel(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         gt = batch['images'][:,1]
-        for i in range(gt.size()[0]):
-            ss = I(gt[i])
-            ss.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
-            self.idd += 1
         pred,_ = self.forward(batch, return_more=False)
         loss = self.loss(pred, gt, return_more=False)
         loss_reduced = {k: v.mean() for k,v in loss.items()}

@@ -67,6 +67,7 @@ except:
 
 from pytorch_msssim import ssim as calc_ssim
 import math
+from _util.twodee_v0 import *
 
 
 
@@ -121,7 +122,12 @@ class SSIMMetric(torchmetrics.Metric):
         self.add_state('running_count', default=torch.tensor(0.0), dist_reduce_fx='sum')
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
-
+        for i in range(preds.size()[0]):
+            pp = I(preds[i])
+            tt = I(target[i])
+            pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
+            tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
+            self.idd += 1
         ans = kornia.metrics.ssim(target, preds, self.window_size).mean((1,2,3))
         self.running_sum += ans.sum()
         self.running_count += len(ans)
