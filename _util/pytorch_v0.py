@@ -138,7 +138,7 @@ class SSIMMetricCPU(torchmetrics.Metric):
         ans = [
             calc_ssim(
                 p.unsqueeze(0).clamp(0, 1),
-                t.unsqueeze(0).clamp(0, 1), val_range=1.
+                t.unsqueeze(0).clamp(0, 1), data_range=1.
             )
             # skimage.metrics.structural_similarity(
             #     p.permute(1,2,0).cpu().numpy(),
