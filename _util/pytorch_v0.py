@@ -65,6 +65,9 @@ try:
 except:
     pass
 
+from pytorch_msssim import ssim_matlab as calc_ssim
+
+
 
 #################### UTILITIES ####################
 
@@ -117,6 +120,7 @@ class SSIMMetric(torchmetrics.Metric):
         self.add_state('running_count', default=torch.tensor(0.0), dist_reduce_fx='sum')
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
+
         ans = kornia.metrics.ssim(target, preds, self.window_size).mean((1,2,3))
         self.running_sum += ans.sum()
         self.running_count += len(ans)
@@ -132,13 +136,17 @@ class SSIMMetricCPU(torchmetrics.Metric):
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
         ans = [
-            skimage.metrics.structural_similarity(
-                p.permute(1,2,0).cpu().numpy(),
-                t.permute(1,2,0).cpu().numpy(),
-                multichannel=True,
-                gaussian=True,
-                # data_range=255,
+            calc_ssim(
+                p.unsqueeze(0).clamp(0, 1),
+                t.unsqueeze(0).clamp(0, 1), val_range=1.
             )
+            # skimage.metrics.structural_similarity(
+            #     p.permute(1,2,0).cpu().numpy(),
+            #     t.permute(1,2,0).cpu().numpy(),
+            #     multichannel=True,
+            #     gaussian=True,
+            #     # data_range=255,
+            # )
             for p,t in zip(preds, target)
         ]
         self.running_sum += sum(ans)
