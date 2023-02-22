@@ -67,7 +67,7 @@ except:
 
 from pytorch_msssim import ssim as calc_ssim
 import math
-from .twodee_v0 import I
+from .twodee_v0 import *
 
 
 
