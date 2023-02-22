@@ -131,8 +131,9 @@ class SSIMMetric(torchmetrics.Metric):
 
             pp = self.transform(preds[i])
             tt = self.transform(target[i])
-            pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
-            tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
+            if (self.idd % 500 == 0):
+                pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd/500))
+                tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd/500))
             # pp = Image.open('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
             # tt = Image.open('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
             self.idd += 1
