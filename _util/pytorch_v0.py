@@ -69,8 +69,8 @@ except:
 import math
 from .twodee_v0 import *
 from PIL import Image
-from torchmetrics.functional import structural_similarity_index_measure as calc_ssim
-
+# from torchmetrics.functional import structural_similarity_index_measure as calc_ssim
+from SSIM_PIL import compare_ssim as calc_ssim
 
 
 #################### UTILITIES ####################
@@ -133,18 +133,18 @@ class SSIMMetric(torchmetrics.Metric):
             tt = self.transform(target[i])
             pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
             tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
-            pp = Image.open('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd)).convert('RGB').float()
-            tt = Image.open('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd)).convert('RGB').float()
+            pp = Image.open('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
+            tt = Image.open('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
             self.idd += 1
-            ppnp = np.array(pp)
-            ttnp = np.array(tt)
-            ppten = torch.tensor(ppnp).permute(2,0,1)
-            ttten = torch.tensor(ttnp).permute(2,0,1)
-            print(ppten.size())
+            # ppnp = np.array(pp)
+            # ttnp = np.array(tt)
+            # ppten = torch.tensor(ppnp).permute(2,0,1)
+            # ttten = torch.tensor(ttnp).permute(2,0,1)
+            # print(ppten.size())
 
             # pp = F.pil_to_tensor(pp)
             # tt = F.pil_to_tensor(tt)
-            ssss = calc_ssim(ppten.unsqueeze(0), ttten.unsqueeze(0))
+            ssss = calc_ssim(pp, tt)
             print(ssss)
             self.running_sum += ssss.item()
 
