@@ -138,8 +138,8 @@ class SSIMMetric(torchmetrics.Metric):
             self.idd += 1
             ppnp = np.array(pp)
             ttnp = np.array(tt)
-            ppten = torch.tensor(ppnp)
-            ttten = torch.tensor(ttnp)
+            ppten = torch.tensor(ppnp).permute(2,0,1)
+            ttten = torch.tensor(ttnp).permute(2,0,1)
             print(ppten.size())
 
             # pp = F.pil_to_tensor(pp)
