@@ -17,6 +17,7 @@ class TrainModel(pl.LightningModule):
         # setup networks
         self.ssl = ssldtm.SoftsplatLite()
         self.dtm = ssldtm.DTM()
+        self.idd = 0
 
         # losses and metrics
         self.metrics_train, self.metrics_val, lwargs = self.get_metrics()
