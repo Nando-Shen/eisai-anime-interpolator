@@ -14,6 +14,7 @@ class Dataset(torch.utils.data.Dataset):
         self.deterministic = deterministic
         self.bns = dk.bns
         self.size = (540, 960)
+        self.idd = 0
         return
     def __len__(self):
         return len(self.bns)
@@ -28,7 +29,8 @@ class Dataset(torch.utils.data.Dataset):
         use_flow = x['flows'] is not None
         for i in x['images']:
             ss = i.resize(s)
-            ss.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.i))
+            ss.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
+            self.idd += 1
 
         imgs = torch.stack([i.resize(s).tensor() for i in x['images']])
         if use_flow:
