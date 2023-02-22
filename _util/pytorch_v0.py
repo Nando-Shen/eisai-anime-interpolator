@@ -127,21 +127,30 @@ class SSIMMetric(torchmetrics.Metric):
         return
     def compute(self):
         return self.running_sum.float() / self.running_count
+
+from util_v0 import save_image
+
 class SSIMMetricCPU(torchmetrics.Metric):
     full_state_update=False
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.add_state('running_sum', default=torch.tensor(0.0), dist_reduce_fx='sum')
         self.add_state('running_count', default=torch.tensor(0.0), dist_reduce_fx='sum')
+        self.i = 1
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
-        ans = calc_ssim(
-                preds,
-                target,
-                size_average=False,
-                data_range=1
-            )
-        print(ans)
+
+        for idx in range(preds.size()[0]):
+            save_image(preds[idx], '/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.i))
+            save_image(target[idx], '/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.i))
+            self.i += 1
+        # ans = calc_ssim(
+        #         preds,
+        #         target,
+        #         size_average=False,
+        #         data_range=1
+        #     )for p,t in zip(preds, target)
+        # print(ans)
             # skimage.metrics.structural_similarity(
             #     p.permute(1,2,0).cpu().numpy(),
             #     t.permute(1,2,0).cpu().numpy(),
@@ -149,10 +158,10 @@ class SSIMMetricCPU(torchmetrics.Metric):
             #     gaussian=True,
             #     # data_range=255,
             # )
-            # for p,t in zip(preds, target)
 
-        self.running_sum += sum(ans)
-        self.running_count += len(ans)
+        #
+        # self.running_sum += sum(ans)
+        # self.running_count += len(ans)
         return
     def compute(self):
         return self.running_sum / self.running_count
