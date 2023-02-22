@@ -131,8 +131,8 @@ class SSIMMetric(torchmetrics.Metric):
 
             pp = self.transform(preds[i])
             tt = self.transform(target[i])
-            # pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
-            # tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
+            pp.save('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
+            tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
             # pp = Image.open('/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.idd))
             # tt = Image.open('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
             self.idd += 1
@@ -171,9 +171,11 @@ class SSIMMetricCPU(torchmetrics.Metric):
         super().__init__(**kwargs)
         self.add_state('running_sum', default=torch.tensor(0.0), dist_reduce_fx='sum')
         self.add_state('running_count', default=torch.tensor(0.0), dist_reduce_fx='sum')
-        self.i = 1
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
+        ans = kornia.losses.ssim(target, preds, self.window_size).mean((1,2,3))
+        self.running_sum += ans.sum()
+        self.running_count += len(ans)
 
         # for idx in range(preds.size()[0]):
         #     save_image(preds[idx], '/home/jiaming/eccvsample' + '/eccvP{}.png'.format(self.i))
