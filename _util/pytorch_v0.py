@@ -125,7 +125,10 @@ class SSIMMetric(torchmetrics.Metric):
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
         # transform = T.ToPILImage()
-        # for i in range(preds.size()[0]):
+        for i in range(preds.size()[0]):
+            ssss = calc_ssim(preds[i].unsqueeze(0).clamp(0,1), target[i].unsqueeze(0).clamp(0,1), size_average=False, data_range=1.0)
+            print(ssss)
+            self.running_sum += ssss[0]
         #     print(preds[i])
         #     print(target[i])
             # pp = transform(preds[i])
@@ -134,11 +137,11 @@ class SSIMMetric(torchmetrics.Metric):
             # tt.save('/home/jiaming/eccvsample' + '/eccvT{}.png'.format(self.idd))
         # print(preds.size())
         # print(target.size())
-        ssss = calc_ssim(preds, target, size_average=False, data_range=1.0)
-        print(ssss)
+        # ssss = calc_ssim(preds, target, size_average=False, data_range=1.0)
+
             # self.idd += 1
-        self.running_count += ssss.size()[0]
-        self.running_sum += ssss.sum()
+        self.running_count += preds.size()[0]
+
             # ans = kornia.metrics.ssim(target, preds, self.window_size).mean((1,2,3))
         # self.running_sum += ans.sum()
         # self.running_count += len(ans)
