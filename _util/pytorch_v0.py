@@ -65,10 +65,11 @@ try:
 except:
     pass
 
-from pytorch_msssim import ssim as calc_ssim
+# from pytorch_msssim import ssim as calc_ssim
 import math
 from .twodee_v0 import *
 from PIL import Image
+from torchmetrics.functional import structural_similarity_index_measure as calc_ssim
 
 
 
@@ -135,7 +136,7 @@ class SSIMMetric(torchmetrics.Metric):
             self.idd += 1
             pp = F.pil_to_tensor(pp)
             tt = F.pil_to_tensor(tt)
-            ssss = calc_ssim(pp.unsqueeze(0).clamp(0,1), tt.unsqueeze(0).clamp(0,1), size_average=False, data_range=1.0)
+            ssss = calc_ssim(pp.unsqueeze(0).clamp(0,1), tt.unsqueeze(0).clamp(0,1))
             self.running_sum += ssss[0]
 
             #     print(preds[i])
