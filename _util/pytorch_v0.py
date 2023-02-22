@@ -140,6 +140,7 @@ class SSIMMetric(torchmetrics.Metric):
             ttnp = np.array(tt)
             ppten = torch.tensor(ppnp)
             ttten = torch.tensor(ttnp)
+            print(ppten.size())
 
             # pp = F.pil_to_tensor(pp)
             # tt = F.pil_to_tensor(tt)
