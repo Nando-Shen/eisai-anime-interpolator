@@ -6,7 +6,6 @@ from _util.twodee_v0 import * ; import _util.twodee_v0 as u2d
 from _util.pytorch_v0 import * ; import _util.pytorch_v0 as utorch
 
 import _util.flow_v0 as uflow
-import torchvision.transforms.functional as F
 
 
 class Dataset(torch.utils.data.Dataset):
@@ -27,7 +26,7 @@ class Dataset(torch.utils.data.Dataset):
         # read
         x = dk[bn]
         use_flow = x['flows'] is not None
-        imgs = torch.stack([F.to_tensor(i.resize(s)) for i in x['images']])
+        imgs = torch.stack([i.resize(s).tensor() for i in x['images']])
         if use_flow:
             flows = uflow.flow_resize(
                 x['flows'],
