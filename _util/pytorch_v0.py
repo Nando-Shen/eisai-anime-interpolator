@@ -135,11 +135,12 @@ class SSIMMetricCPU(torchmetrics.Metric):
         self.add_state('running_count', default=torch.tensor(0.0), dist_reduce_fx='sum')
         return
     def update(self, preds: torch.Tensor, target: torch.Tensor):
-        ans = [
-            calc_ssim(
-                p.unsqueeze(0).clamp(0, 1),
-                t.unsqueeze(0).clamp(0, 1), data_range=1.
+        ans = calc_ssim(
+                preds,
+                target,
+                data_range=255
             )
+        print(ans)
             # skimage.metrics.structural_similarity(
             #     p.permute(1,2,0).cpu().numpy(),
             #     t.permute(1,2,0).cpu().numpy(),
@@ -147,8 +148,8 @@ class SSIMMetricCPU(torchmetrics.Metric):
             #     gaussian=True,
             #     # data_range=255,
             # )
-            for p,t in zip(preds, target)
-        ]
+            # for p,t in zip(preds, target)
+
         self.running_sum += sum(ans)
         self.running_count += len(ans)
         return
