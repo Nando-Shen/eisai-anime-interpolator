@@ -11,7 +11,7 @@ from _train.frame_interpolation import train
 import _databacks.atd12k as datasets
 
 device = torch.device('cuda')
-
+print("a===========================")
 # load data
 dk = datasets.DatabackendATD12k()
 bns_test = sorted([str(bn, encoding='utf-8') for bn in dk.bns if bn.startswith(b'test/')])
