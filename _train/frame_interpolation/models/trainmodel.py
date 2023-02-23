@@ -9,6 +9,7 @@ import _util.flow_v0 as uflow
 import _util.distance_transform_v0 as udist
 import _util.sketchers_v1 as usketchers
 import torchvision.transforms as T
+import os
 
 import _train.frame_interpolation.models.ssldtm as ssldtm
 class TrainModel(pl.LightningModule):
@@ -98,7 +99,7 @@ class TrainModel(pl.LightningModule):
         for i in range(preds.size()[0]):
             pp = self.transform(preds[i])
             tt = self.transform(gt[i])
-            print('aaaaaa')
+            os.mkdir('/home/jiaming/eccvoutput'+ '/{}'.format(fn[i]))
             pp.save('/home/jiaming/eccvoutput' + '/{}/eccvpred.png'.format(fn[i]))
             tt.save('/home/jiaming/eccvoutput' + '/{}/eccvgt.png'.format(fn[i]))
         
