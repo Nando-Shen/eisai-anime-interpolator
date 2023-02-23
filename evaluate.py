@@ -1,24 +1,24 @@
 
-
-
 from _util.util_v0 import * ; import _util.util_v0 as uutil
 from _util.twodee_v0 import * ; import _util.twodee_v0 as u2d
 from _util.pytorch_v0 import * ; import _util.pytorch_v0 as utorch
 import _util.distance_transform_v0 as udist
 
-import _train.frame_interpolation.models.ssldtm as models
-from _train.frame_interpolation import train
+import _train.frame_interpolation.models.trainmodel as models
+# from _train.frame_interpolation import train
 import _databacks.atd12k as datasets
 
 device = torch.device('cuda')
-print("a===========================")
+print('==========================')
+
 # load data
 dk = datasets.DatabackendATD12k()
 bns_test = sorted([str(bn, encoding='utf-8') for bn in dk.bns if bn.startswith(b'test/')])
-assert len(bns_test)==2000, 'missing ATD test data'
+assert len(bns_test )==2000, 'missing ATD test data'
 
 # load models and metrics
-model = train.TrainModel().load_from_checkpoint('temp/training_demo_output/checkpoints/epoch=0044-val_lpips=0.086155.ckpt')
+model = models.TrainModel().load_from_checkpoint \
+    ('temp/training_demo_output/checkpoints/epoch=0044-val_lpips=0.086155.ckpt')
 model.to(device).eval()
 # ssl = models.SoftsplatLite()
 # dtm = models.DTM()
@@ -44,36 +44,36 @@ for bn in tqdm(bns_test):
         ], dim=0)[None,].to(device),
         'flows': x['flows'][None,].to(device)
     }
-    
+
     # compute model outputs
     with torch.no_grad():
         out_dtm = model.forward(x, return_more=False)
         # out_ssl,_ = ssl(x, return_more=True)
         # out_dtm,_ = dtm(x, out_ssl, _)
-    pred = out_dtm[:,:3]
+    pred = out_dtm[: ,:3]
     # dump((x,pred), '/dev/shm/test.pkl')
     # exit(0)
-    
+
     # evaluate
-    img_gt = x['images'][:,1]
+    img_gt = x['images'][: ,1]
     with torch.no_grad():
         out = metrics(pred, img_gt)
-    for k,v in out.items():
+    for k ,v in out.items():
         results[k].append(v.item())
     # break
 
 # print results
 print(Table([
     ['subset::l', 'metric::l', 'score::l'],
-    ['=::>',],
+    ['=::>' ,],
     ['all::l', 'lpips::l', (np.mean(results['lpips']), 'r:.4E')],
     ['all::l', 'chamfer::l', (np.mean(results['chamfer']), 'r:.4E')],
     ['all::l', 'psnr::l', (np.mean(results['psnr']), 'r:.2f')],
-    ['all::l', 'ssim::l', (100*np.mean(results['ssim']), 'r:.2f')],
-    ['east::l', 'lpips::l', (np.mean([v for bn,v in zip(bns_test,results['lpips']) if 'Japan_' in bn]), 'r:.4E')],
-    ['east::l', 'chamfer::l', (np.mean([v for bn,v in zip(bns_test,results['chamfer']) if 'Japan_' in bn]), 'r:.4E')],
-    ['west::l', 'lpips::l', (np.mean([v for bn,v in zip(bns_test,results['lpips']) if 'Disney_' in bn]), 'r:.4E')],
-    ['west::l', 'chamfer::l', (np.mean([v for bn,v in zip(bns_test,results['chamfer']) if 'Disney_' in bn]), 'r:.4E')],
+    ['all::l', 'ssim::l', (10 0 *np.mean(results['ssim']), 'r:.2f')],
+    ['east::l', 'lpips::l', (np.mean([v for bn ,v in zip(bns_test ,results['lpips']) if 'Japan_' in bn]), 'r:.4E')],
+    ['east::l', 'chamfer::l', (np.mean([v for bn ,v in zip(bns_test ,results['chamfer']) if 'Japan_' in bn]), 'r:.4E')],
+    ['west::l', 'lpips::l', (np.mean([v for bn ,v in zip(bns_test ,results['lpips']) if 'Disney_' in bn]), 'r:.4E')],
+    ['west::l', 'chamfer::l', (np.mean([v for bn ,v in zip(bns_test ,results['chamfer']) if 'Disney_' in bn]), 'r:.4E')],
 ]))
 
 
