@@ -7,10 +7,10 @@ from _util.pytorch_v0 import * ; import _util.pytorch_v0 as utorch
 import _util.distance_transform_v0 as udist
 
 import _train.frame_interpolation.models.ssldtm as models
+from _train.frame_interpolation import train
 import _databacks.atd12k as datasets
 
 device = torch.device('cuda')
-
 
 # load data
 dk = datasets.DatabackendATD12k()
@@ -18,17 +18,19 @@ bns_test = sorted([str(bn, encoding='utf-8') for bn in dk.bns if bn.startswith(b
 assert len(bns_test)==2000, 'missing ATD test data'
 
 # load models and metrics
-ssl = models.SoftsplatLite()
-dtm = models.DTM()
-ssl.load_state_dict(torch.load('./checkpoints/ssl.pt'))
-dtm.load_state_dict(torch.load('./checkpoints/dtm.pt'))
-ssl = ssl.to(device).eval()
-dtm = dtm.to(device).eval()
+model = train.TrainModel().load_from_checkpoint('temp/training_demo_output/checkpoints/epoch=0044-val_lpips=0.086155.ckpt')
+model.to(device).eval()
+# ssl = models.SoftsplatLite()
+# dtm = models.DTM()
+# ssl.load_state_dict(torch.load('./checkpoints/ssl.pt'))
+# dtm.load_state_dict(torch.load('./checkpoints/dtm.pt'))
+# ssl = ssl.to(device).eval()
+# dtm = dtm.to(device).eval()
 metrics = torchmetrics.MetricCollection({
     'psnr': utorch.PSNRMetricCPU(),
-    'ssim': utorch.SSIMMetricCPU(),
-    'lpips': utorch.LPIPSMetric(net_type='alex'),
-    'chamfer': udist.ChamferDistance2dMetric(t=2.0, sigma=1.0),
+    'ssim': utorch.SSIMMetric(),
+    # 'lpips': utorch.LPIPSMetric(net_type='alex'),
+    # 'chamfer': udist.ChamferDistance2dMetric(t=2.0, sigma=1.0),
     # 'chamfer': udist.ChamferDistance2dMetric(block=512, t=2.0, sigma=1.0),
 }).to(device).eval()
 
@@ -45,8 +47,9 @@ for bn in tqdm(bns_test):
     
     # compute model outputs
     with torch.no_grad():
-        out_ssl,_ = ssl(x, return_more=True)
-        out_dtm,_ = dtm(x, out_ssl, _)
+        out_dtm = model.forward(x, return_more=False)
+        # out_ssl,_ = ssl(x, return_more=True)
+        # out_dtm,_ = dtm(x, out_ssl, _)
     pred = out_dtm[:,:3]
     # dump((x,pred), '/dev/shm/test.pkl')
     # exit(0)
