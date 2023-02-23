@@ -19,6 +19,7 @@ class DatabackendATD12k:
             bn = idx
         else:
             assert 0, '{} not understood'.format(idx)
+        tt, tid = bn.split('/')
         flow0 = torch.from_numpy(load('{}/{}/guide_flo13.npy'.format(self.fn, self.get_ffn(bn))))
         flow1 = torch.from_numpy(load('{}/{}/guide_flo31.npy'.format(self.fn, self.get_ffn(bn))))
         # print(flow1.size())
@@ -28,7 +29,8 @@ class DatabackendATD12k:
                 I(self.get_fn(bn, i))
                 for i in range(3)
             ],
-            'flows': torch.stack([flow0,flow1], dim=1)
+            'flows': torch.stack([flow0,flow1], dim=1),
+            'fn': tid
         }
 
     def get_ffn(self, bn):

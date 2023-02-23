@@ -91,6 +91,13 @@ class TrainModel(pl.LightningModule):
         loss = self.loss(pred, gt, return_more=False)
         loss_reduced = {k: v.mean() for k,v in loss.items()}
         mets = self.metrics_val(pred[:,:3], gt)
+        preds = pred[:,:3]
+        fn = batch['fn']
+        for i in range(preds.size()[0]):
+            pp = self.transform(preds[i])
+            tt = self.transform(gt[i])
+            pp.save('/home/jiaming/eccvoutput' + '/{}/eccvpred.png'.format(fn[i]))
+            tt.save('/home/jiaming/eccvoutput' + '/{}/eccvgt.png'.format(fn[i]))
         
         # log
         for k,v in loss_reduced.items():
