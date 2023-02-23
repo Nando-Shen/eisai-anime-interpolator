@@ -36,11 +36,12 @@ metrics = torchmetrics.MetricCollection({
 
 # evaluate
 results = defaultdict(list)
+s = (540, 960)
 for bn in tqdm(bns_test):
     x = dk[bn]
     x = {
         'images': torch.stack([
-            i.tensor() for i in x['images']
+            i.resize(s).tensor() for i in x['images']
         ], dim=0)[None,].to(device),
         'flows': x['flows'][None,].to(device)
     }
