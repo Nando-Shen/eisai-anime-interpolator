@@ -8,6 +8,7 @@ from _util.pytorch_v0 import * ; import _util.pytorch_v0 as utorch
 import _util.flow_v0 as uflow
 import _util.distance_transform_v0 as udist
 import _util.sketchers_v1 as usketchers
+import torchvision.transforms as T
 
 import _train.frame_interpolation.models.ssldtm as ssldtm
 class TrainModel(pl.LightningModule):
@@ -17,6 +18,7 @@ class TrainModel(pl.LightningModule):
         # setup networks
         self.ssl = ssldtm.SoftsplatLite()
         self.dtm = ssldtm.DTM()
+        self.transform = T.ToPILImage()
 
         # losses and metrics
         self.metrics_train, self.metrics_val, lwargs = self.get_metrics()
