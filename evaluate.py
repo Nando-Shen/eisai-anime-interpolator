@@ -69,7 +69,7 @@ print(Table([
     ['all::l', 'lpips::l', (np.mean(results['lpips']), 'r:.4E')],
     ['all::l', 'chamfer::l', (np.mean(results['chamfer']), 'r:.4E')],
     ['all::l', 'psnr::l', (np.mean(results['psnr']), 'r:.2f')],
-    ['all::l', 'ssim::l', (10 0 *np.mean(results['ssim']), 'r:.2f')],
+    ['all::l', 'ssim::l', (100 *np.mean(results['ssim']), 'r:.2f')],
     ['east::l', 'lpips::l', (np.mean([v for bn ,v in zip(bns_test ,results['lpips']) if 'Japan_' in bn]), 'r:.4E')],
     ['east::l', 'chamfer::l', (np.mean([v for bn ,v in zip(bns_test ,results['chamfer']) if 'Japan_' in bn]), 'r:.4E')],
     ['west::l', 'lpips::l', (np.mean([v for bn ,v in zip(bns_test ,results['lpips']) if 'Disney_' in bn]), 'r:.4E')],
