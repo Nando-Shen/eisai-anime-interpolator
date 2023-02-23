@@ -61,6 +61,7 @@ class Dataset(torch.utils.data.Dataset):
         ans = {
             'bn': bn,
             'images': imgs,
+            'fn': x['fn']
         }
         if use_flow:
             ans['flows'] = flows
