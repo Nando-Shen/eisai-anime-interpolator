@@ -6,8 +6,8 @@ from _util.twodee_v0 import * ; import _util.twodee_v0 as u2d
 from _util.pytorch_v0 import * ; import _util.pytorch_v0 as utorch
 import _util.distance_transform_v0 as udist
 
-import _train.frame_interpolation.models.ssldtm as models
-from _train.frame_interpolation import train
+import _train.frame_interpolation.models.trainmodel as models
+# from _train.frame_interpolation import train
 import _databacks.atd12k as datasets
 
 device = torch.device('cuda')
@@ -18,7 +18,7 @@ bns_test = sorted([str(bn, encoding='utf-8') for bn in dk.bns if bn.startswith(b
 assert len(bns_test)==2000, 'missing ATD test data'
 
 # load models and metrics
-model = train.TrainModel().load_from_checkpoint('temp/training_demo_output/checkpoints/epoch=0044-val_lpips=0.086155.ckpt')
+model = models.TrainModel().load_from_checkpoint('temp/training_demo_output/checkpoints/epoch=0044-val_lpips=0.086155.ckpt')
 model.to(device).eval()
 # ssl = models.SoftsplatLite()
 # dtm = models.DTM()
