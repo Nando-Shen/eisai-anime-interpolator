@@ -68,7 +68,7 @@ class TrainModel(pl.LightningModule):
             'loss_lpips': lp,
             'loss_dt': ldt,
         }
-    def forward(self, x, t=0.5, return_more=False):
+    def forward(self, x, t=0.25, return_more=False):
         out_ssl,_ = self.ssl(x, t=t, return_more=True)
         out_dtm,_ = self.dtm(x, out_ssl, _)
         return out_dtm, (locals() if return_more else None)
@@ -98,10 +98,10 @@ class TrainModel(pl.LightningModule):
         fn = batch['fn']
         for i in range(preds.size()[0]):
             pp = self.transform(preds[i])
-            tt = self.transform(gt[i])
-            os.makedirs('/home/jiaming/eccvoutput'+ '/{}'.format(fn[i]), exist_ok=True)
-            pp.save('/home/jiaming/eccvoutput' + '/{}/eccvpred.png'.format(fn[i]))
-            tt.save('/home/jiaming/eccvoutput' + '/{}/eccvgt.png'.format(fn[i]))
+            # tt = self.transform(gt[i])
+            # os.makedirs('/home/jiaming/eccvoutput'+ '/{}'.format(fn[i]), exist_ok=True)
+            pp.save('/home/jiaming/eccvoutput' + '/{}/eccvpred1/4.png'.format(fn[i]))
+            # tt.save('/home/jiaming/eccvoutput' + '/{}/eccvgt.png'.format(fn[i]))
         
         # log
         for k,v in loss_reduced.items():
