@@ -100,7 +100,7 @@ class TrainModel(pl.LightningModule):
             pp = self.transform(preds[i])
             # tt = self.transform(gt[i])
             os.makedirs('/home/jiaming/eccvoutput'+ '/{}'.format(fn[i]), exist_ok=True)
-            pp.save('/home/jiaming/eccvoutput' + '/{}/eccvpred1/4.png'.format(fn[i]))
+            pp.save('/home/jiaming/eccvoutput' + '/{}/eccvpred14.png'.format(fn[i]))
             # tt.save('/home/jiaming/eccvoutput' + '/{}/eccvgt.png'.format(fn[i]))
         
         # log
