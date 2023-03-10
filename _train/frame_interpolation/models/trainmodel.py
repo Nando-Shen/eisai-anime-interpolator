@@ -68,7 +68,7 @@ class TrainModel(pl.LightningModule):
             'loss_lpips': lp,
             'loss_dt': ldt,
         }
-    def forward(self, x, t=0.25, return_more=False):
+    def forward(self, x, t=0.75, return_more=False):
         out_ssl,_ = self.ssl(x, t=t, return_more=True)
         out_dtm,_ = self.dtm(x, out_ssl, _)
         return out_dtm, (locals() if return_more else None)
