@@ -20,7 +20,7 @@ args = ap.parse_args()
 
 from _train.frame_interpolation.models.trainmodel import TrainModel
 model = TrainModel().load_from_checkpoint \
-    ('temp/training_demo_output/checkpoints/epoch=0017-val_lpips=0.096261.ckpt')
+    ('temp/training_demo_output/checkpoints/epoch=0019-val_lpips=0.097225.ckpt')
 
 # from _train.frame_interpolation.datasets.rrldextr import Datamodule
 from _train.frame_interpolation.datasets.atd12k import Datamodule
