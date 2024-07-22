@@ -39,7 +39,7 @@ class DatabackendAnimeRun:
             fff = 'test'
         else:
             fff = 'train'
-        return '{}/contour_label/{}'.format(fff, tid)
+        return '{}/contour_region/{}'.format(fff, tid)
 
 
     def get_fn(self, bn, fidx):
