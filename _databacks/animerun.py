@@ -3,7 +3,7 @@ from _util.util_v0 import * ; import _util.util_v0 as uutil
 from _util.twodee_v0 import * ; import _util.twodee_v0 as u2d
 from _util.pytorch_v0 import * ; import _util.pytorch_v0 as utorch
 
-class DatabackendATD12k:
+class DatabackendAnimeRun:
     def __init__(self):
         self.dn = '/home/kuhu6123/jshe2377/AnimeRun/AnimeRun/'
         self.fn = '/home/kuhu6123/jshe2377/AnimeRun/AnimeRun/'

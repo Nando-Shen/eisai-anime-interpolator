@@ -70,14 +70,15 @@ class Dataset(torch.utils.data.Dataset):
             ans['reversed'] = rev
         return ans
 
-from _databacks.atd12k import DatabackendATD12k
+# from _databacks.atd12k import DatabackendATD12k
+from _databacks.animerun import DatabackendAnimeRun
 
 class Datamodule(pl.LightningDataModule):
     def __init__(self, path, bs, num_workers=4):
         super().__init__()
         self.path = path
         self.bs = bs
-        self.dk = DatabackendATD12k()
+        self.dk = DatabackendAnimeRun()
         self.num_workers = num_workers
         return
     def train_dataloader(self):
