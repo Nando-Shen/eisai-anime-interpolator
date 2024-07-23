@@ -36,7 +36,7 @@ trainer = pl.Trainer(
     # limit_val_batches=4,
     # limit_test_batches=4,
     gradient_clip_val=1.0,
-    max_epochs=2,
+    max_epochs=20,
 
     default_root_dir=mkdir(args.output),
 
