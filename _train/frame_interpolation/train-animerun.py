@@ -3,7 +3,9 @@
 
 
 import sys
+import os
 if sys.path[0]!='': sys.path.insert(0, '')
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 from _util.util_v0 import * ; import _util.util_v0 as util
 from _util.twodee_v0 import * ; import _util.twodee_v0 as u2d
