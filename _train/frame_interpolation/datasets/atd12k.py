@@ -62,8 +62,8 @@ class Dataset(torch.utils.data.Dataset):
         images = [Image.open(pth) for pth in imgpaths]
 
         size = (384, 192)
-        flow13 = np.load(self.data_list[index][4]).astype(np.float32)
-        flow31 = np.load(self.data_list[index][5]).astype(np.float32)
+        flow13 = torch.from_numpy(np.load(self.data_list[index][4]).astype(np.float32))
+        flow31 = torch.from_numpy(np.load(self.data_list[index][5]).astype(np.float32))
         flow = [flow13, flow31]
         if self.training:
             seed = random.randint(0, 2 ** 32)
