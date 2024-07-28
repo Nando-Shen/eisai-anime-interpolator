@@ -7,7 +7,6 @@ class DatabackendATD12kTrain:
     def __init__(self):
         self.dn = '/share/hhd3/kuhu6123/atd12k_points/atd12k_points'
         self.fn = '/share/hhd3/kuhu6123/atd12k_points/atd12k_points'
-        self.test_source = '540p'
         self.bns = np.array(self.get_bns(), dtype=np.string_)
         return
     def __len__(self):
@@ -55,7 +54,7 @@ class DatabackendATD12kTrain:
     def get_bns(self):
         return sorted([
             'train/{}'.format(dn)
-            for dn in os.listdir('{}/train_10k{}'.format(self.dn, self.test_source))
-            if os.path.isdir('{}/train_10k{}/{}'.format(self.dn, self.test_source, dn))
+            for dn in os.listdir('{}/train_10k'.format(self.dn))
+            if os.path.isdir('{}/train_10k/{}'.format(self.dn, dn))
         ])
 
