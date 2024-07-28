@@ -3,7 +3,7 @@ from _util.util_v0 import * ; import _util.util_v0 as uutil
 from _util.twodee_v0 import * ; import _util.twodee_v0 as u2d
 from _util.pytorch_v0 import * ; import _util.pytorch_v0 as utorch
 
-class DatabackendATD12k:
+class DatabackendATD12kTrain:
     def __init__(self):
         self.dn = '/share/hhd3/kuhu6123/atd12k_points/atd12k_points'
         self.fn = '/share/hhd3/kuhu6123/atd12k_points/atd12k_points'
@@ -46,7 +46,6 @@ class DatabackendATD12k:
         tt,tid = bn.split('/')
         if tt=='test':
             dn = '{}/test_2k_{}'.format(self.dn, self.test_source)
-            # ext = 'png' if self.test_source=='540p' else 'jpg'
             ext = 'jpg'
         else:
             dn = '{}/train_10k'.format(self.dn)
@@ -55,8 +54,8 @@ class DatabackendATD12k:
 
     def get_bns(self):
         return sorted([
-            'test/{}'.format(dn)
-            for dn in os.listdir('{}/test_2k_{}'.format(self.dn, self.test_source))
-            if os.path.isdir('{}/test_2k_{}/{}'.format(self.dn, self.test_source, dn))
+            'train/{}'.format(dn)
+            for dn in os.listdir('{}/train_10k{}'.format(self.dn, self.test_source))
+            if os.path.isdir('{}/train_10k{}/{}'.format(self.dn, self.test_source, dn))
         ])
 
