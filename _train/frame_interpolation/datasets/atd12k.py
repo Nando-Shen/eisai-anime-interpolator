@@ -88,7 +88,7 @@ class Dataset(torch.utils.data.Dataset):
             imgpath = self.data_list[index][3]
             # return images, gt, imgpath, flow
 
-        imgs = torch.stack([i.resize(size).tensor() for i in images])
+        imgs = torch.stack([i.tensor() for i in images])
 
         return {
             'bn': imgpath,
