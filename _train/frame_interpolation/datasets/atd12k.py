@@ -69,6 +69,7 @@ class Dataset(torch.utils.data.Dataset):
             seed = random.randint(0, 2 ** 32)
             images_ = []
             for img_ in images:
+                img_ = img_.resize(size)
                 random.seed(seed)
                 images_.append(self.transforms(img_))
             images = images_
