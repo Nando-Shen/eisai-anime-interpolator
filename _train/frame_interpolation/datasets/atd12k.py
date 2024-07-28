@@ -77,12 +77,13 @@ class Datamodule(pl.LightningDataModule):
         super().__init__()
         self.path = path
         self.bs = bs
-        self.dk = DatabackendATD12k()
+        self.dktrain = DatabackendATD12k(is_training=True)
+        self.dktest = DatabackendATD12k(is_training=False)
         self.num_workers = num_workers
         return
     def train_dataloader(self):
         ds = Dataset(
-            self.dk,
+            self.dktrain,
             False,
         )
         dl = torch.utils.data.DataLoader(
@@ -93,7 +94,7 @@ class Datamodule(pl.LightningDataModule):
         return dl
     def val_dataloader(self):
         ds = Dataset(
-            self.dk,
+            self.dktest,
             True,
         )
         dl = torch.utils.data.DataLoader(
@@ -104,7 +105,7 @@ class Datamodule(pl.LightningDataModule):
         return dl
     def test_dataloader(self):
         ds = Dataset(
-            self.dk,
+            self.dktest,
             True,
         )
         dl = torch.utils.data.DataLoader(
