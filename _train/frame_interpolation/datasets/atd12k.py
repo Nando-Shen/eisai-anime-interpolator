@@ -4,71 +4,96 @@
 from _util.util_v0 import * ; import _util.util_v0 as util
 from _util.twodee_v0 import * ; import _util.twodee_v0 as u2d
 from _util.pytorch_v0 import * ; import _util.pytorch_v0 as utorch
+from torchvision import transforms
 
 import _util.flow_v0 as uflow
 
 
 class Dataset(torch.utils.data.Dataset):
-    def __init__(self, dk, deterministic):
-        self.dk = dk
-        self.deterministic = deterministic
-        self.bns = dk.bns
-        self.size = (540, 960)
-        self.idd = 0
+    def __init__(self, is_training):
+        self.data_root = "/share/hhd3/kuhu6123/atd12k_points/atd12k_points"
+        self.region_root = "/share/hhd3/kuhu6123/atd12k_points/atd12k_points"
+        self.training = is_training
+        if is_training:
+            self.region_root = os.path.join(self.data_root, 'train_10k_region')
+            self.data_root = os.path.join(self.data_root, 'train_10k')
+        else:
+            self.region_root = os.path.join(self.data_root, 'test_2k_region')
+            self.data_root = os.path.join(self.data_root, 'test_2k_540p')
+
+        dirs = os.listdir(self.data_root)
+        data_list = []
+        for d in dirs:
+            if d == '.DS_Store':
+                continue
+            img0 = os.path.join(self.data_root, d, 'frame1.jpg')
+            img1 = os.path.join(self.data_root, d, 'frame3.jpg')
+
+            gt = os.path.join(self.data_root, d, 'frame2.jpg')
+
+            region13 = os.path.join(self.region_root, d, 'guide_flo13.npy')
+            region31 = os.path.join(self.region_root, d, 'guide_flo31.npy')
+
+            # data_list.append([img0, img1, points14, points12, points34, gt, d])
+            data_list.append([img0, img1, gt, d, region13, region31])
+
+        self.data_list = data_list
+
+        if self.training:
+            self.transforms = transforms.Compose([
+                # transforms.RandomCrop(228),
+                transforms.RandomHorizontalFlip(),
+                # transforms.ColorJitter(0.05, 0.05, 0.05, 0.05),
+                transforms.ToTensor()
+            ])
+        else:
+            self.transforms = transforms.Compose([
+                transforms.ToTensor()
+            ])
         return
     def __len__(self):
-        return len(self.bns)
-    def __getitem__(self, idx, return_more=False):
-        s = sf = self.size
-        det = self.deterministic
-        bn = str(self.bns[idx], encoding='utf-8')
-        dk = self.dk
-
-        # read
-        x = dk[bn]
-        use_flow = x['flows'] is not None
-
-        imgs = torch.stack([i.resize(s).tensor() for i in x['images']])
-        if use_flow:
-            flows = uflow.flow_resize(
-                x['flows'],
-                sf,
-                mode='bilinear',
-            )
+        if self.training:
+            return len(self.data_list)
         else:
-            flows = None
+            return len(self.data_list)
 
-        # augment
-        flip = False
-        rev = False
-        if not det:
-            # flip horizontal
-            if np.random.rand()<0.5:
-                flip = True
-                imgs = imgs.flip(dims=(-1,))
-                if use_flow:
-                    flows = flows.flip(dims=(-1,))
-                    flows[:,1] *= -1
+    def __getitem__(self, index):
+        imgpaths = [self.data_list[index][0], self.data_list[index][1], self.data_list[index][2]]
+        images = [Image.open(pth) for pth in imgpaths]
 
-            # reverse sequence
-            if np.random.rand()<0.5:
-                rev = True
-                imgs = imgs.flip(dims=(0,))
-                if use_flow:
-                    flows = flows.flip(dims=(0,))
-        
-        # package
-        ans = {
-            'bn': bn,
-            'images': imgs,
-            'fn': x['fn']
+        size = (384, 192)
+        flow13 = np.load(self.data_list[index][4]).astype(np.float32)
+        flow31 = np.load(self.data_list[index][5]).astype(np.float32)
+        flow = [flow13, flow31]
+        if self.training:
+            seed = random.randint(0, 2 ** 32)
+            images_ = []
+            for img_ in images:
+                random.seed(seed)
+                images_.append(self.transforms(img_))
+            images = images_
+
+            gt = images[2]
+
+            images = images[:2]
+            imgpath = self.data_list[index][3]
+
+            # return images, gt, flow
+        else:
+            T = self.transforms
+            images = [T(img_.resize(size)) for img_ in images]
+
+            gt = images[2]
+            images = images[:2]
+            imgpath = self.data_list[index][3]
+            # return images, gt, imgpath, flow
+
+        return {
+            'bn': imgpath,
+            'images': images,
+            'flows': torch.stack([flow13, flow31], dim=1),
+            'fn': imgpath
         }
-        if use_flow:
-            ans['flows'] = flows
-        if return_more:
-            ans['flipped'] = flip
-            ans['reversed'] = rev
-        return ans
 
 from _databacks.atd12k import DatabackendATD12k
 
