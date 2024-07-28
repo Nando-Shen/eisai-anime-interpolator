@@ -119,7 +119,6 @@ class Datamodule(pl.LightningDataModule):
         return dl
     def val_dataloader(self):
         ds = Dataset(
-            self.dktest,
             True,
         )
         dl = torch.utils.data.DataLoader(
