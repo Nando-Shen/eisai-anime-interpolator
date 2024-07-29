@@ -71,19 +71,21 @@ class Dataset(torch.utils.data.Dataset):
         return ans
 
 # from _databacks.atd12k import DatabackendATD12k
-from _databacks.animerun import DatabackendAnimeRun
+from _databacks.animeruntrain import DatabackendAnimeRunTrain
+from _databacks.animeruntest import DatabackendAnimeRunTest
 
 class Datamodule(pl.LightningDataModule):
     def __init__(self, path, bs, num_workers=4):
         super().__init__()
         self.path = path
         self.bs = bs
-        self.dk = DatabackendAnimeRun()
+        self.dktrain = DatabackendAnimeRunTrain()
+        self.dktest = DatabackendAnimeRunTrain()
         self.num_workers = num_workers
         return
     def train_dataloader(self):
         ds = Dataset(
-            self.dk,
+            self.dktrain,
             False,
         )
         dl = torch.utils.data.DataLoader(
@@ -94,7 +96,7 @@ class Datamodule(pl.LightningDataModule):
         return dl
     def val_dataloader(self):
         ds = Dataset(
-            self.dk,
+            self.dktest,
             True,
         )
         dl = torch.utils.data.DataLoader(
@@ -105,7 +107,7 @@ class Datamodule(pl.LightningDataModule):
         return dl
     def test_dataloader(self):
         ds = Dataset(
-            self.dk,
+            self.dktest,
             True,
         )
         dl = torch.utils.data.DataLoader(

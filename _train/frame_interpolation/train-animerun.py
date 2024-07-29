@@ -21,9 +21,9 @@ args = ap.parse_args()
 #################### train ####################
 
 from _train.frame_interpolation.models.trainmodel import TrainModel
-model = TrainModel()
-# model = TrainModel().load_from_checkpoint \
-#     ('temp/training_demo_output/checkpoints/epoch=0019-val_lpips=0.097225.ckpt')
+# model = TrainModel()
+model = TrainModel().load_from_checkpoint \
+    ('temp/training_demo_output/checkpoints/epoch=0019-val_lpips=0.133470.ckpt')
 
 # from _train.frame_interpolation.datasets.rrldextr import Datamodule
 from _train.frame_interpolation.datasets.animerun import Datamodule
@@ -36,7 +36,7 @@ trainer = pl.Trainer(
     # limit_val_batches=4,
     # limit_test_batches=4,
     gradient_clip_val=1.0,
-    max_epochs=20,
+    max_epochs=10,
 
     default_root_dir=mkdir(args.output),
 
