@@ -99,8 +99,8 @@ class TrainModel(pl.LightningModule):
         for i in range(preds.size()[0]):
             pp = self.transform(preds[i])
             # tt = self.transform(gt[i])
-            os.makedirs('/home/kuhu6123/jshe2377/eisai/eisai-anime-interpolator/eccvoutput'+ '/{}'.format(fn[i]), exist_ok=True)
-            pp.save('/home/kuhu6123/jshe2377/eisai/eisai-anime-interpolator/eccvoutput' + '/{}/eccvpred12.png'.format(fn[i]))
+            os.makedirs('/home/kuhu6123/jshe2377/eisai/eisai-anime-interpolator/eccvoutput-animerun'+ '/{}'.format(fn[i]), exist_ok=True)
+            pp.save('/home/kuhu6123/jshe2377/eisai/eisai-anime-interpolator/eccvoutput-animerun' + '/{}/eccv-animerun.png'.format(fn[i]))
             # tt.save('/home/jiaming/eccvoutput' + '/{}/eccvgt.png'.format(fn[i]))
         
         # log
